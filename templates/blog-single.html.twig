@@ -5,12 +5,13 @@
 <!-- Header Start -->
 	{% include 'menu.html.twig' %}
 <!-- header close -->
+
 <section class="page-title bg-2">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
         <div class="block">
-          <h1>Blogs</h1>
+          <h1>Blog Destils</h1>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, quibusdam.</p>
         </div>
       </div>
@@ -18,57 +19,20 @@
   </div>
 </section>
 
-
-<div class="page-wrapper">
+<section class="page-wrapper">
 	<div class="container">
 		<div class="row">
-		   {% for article in articles %}
-			<div class="col-md-6">
-				<div class="post">
-					<div class="post-thumb">
-						<a href="blog-single.html">
-							<img class="img-fluid" src="asset('images/blog/blog-post-1.jpg')}}" alt="">
-						</a>
-					</div>
-					<h3 class="post-title"><a href="blog-single.html">{{ article.titre }}</a></h3>
-					<div class="post-meta">
-						<ul>
-							<li>
-								<i class="ion-calendar"></i> {{ article.crea ? article.crea|date('Y-m-d H:i:s') : '' }}
-							</li>
-							<li>
-								<i class="ion-android-people"></i> Posté par {{article.utilisateur.pseudo}}
-							</li>
-							<li>
-								<a href="#"><i class="ion-pricetags"></i>{{article.getCategorie.getLibelle}}</a>
-							</li>
-						</ul>
-					</div>
-					<div class="post-content">
-						{{ article.contenu }}
-						<a href="{{path('app_article_show', {'id':article.id})}}" class="btn btn-main">Read More</a>
-					</div>
+			<div class="col-md-12">
+				<div class="post post-single">
+				     {% block post %}
+					
+					     {% endblock %}
+						 
 				</div>
 			</div>
-			        {% else %}
-       no records found
-        {% endfor %}
-			
 		</div>
-
-
-		<nav aria-label="Page navigation example">
-			<ul class="pagination post-pagination justify-content-center">
-				<li class="page-item"><a class="page-link" href="blog-grid.html">Prev</a></li>
-				<li class="page-item"><a class="page-link" href="blog-grid.html">1</a></li>
-				<li class="page-item"><a class="page-link" href="blog-grid.html">2</a></li>
-				<li class="page-item"><a class="page-link" href="blog-grid.html">3</a></li>
-				<li class="page-item"><a class="page-link" href="blog-grid.html">Next</a></li>
-			</ul>
-		</nav>
 	</div>
-</div>
-
+</section>
 
 <!-- footer Start -->
 <footer class="footer">

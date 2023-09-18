@@ -47,8 +47,11 @@ class ArticleController extends AbstractController
     #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
     public function show(Article $article): Response
     {
+        $nbAvis = count($article->getAvis());
+       
         return $this->render('article/show.html.twig', [
             'article' => $article,
+            'nbAvis' =>$nbAvis
         ]);
     }
 

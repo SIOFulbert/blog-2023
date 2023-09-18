@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Categorie;
 use App\Entity\Article;
 use App\Entity\Utilisateur;
+use App\Entity\Avis;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -37,6 +38,14 @@ class AppFixtures extends Fixture
                 $article->setUtilisateur($user);
                 $article->setCategorie($cat);
                 $manager->persist($article);
+                for($j=0;$j<=rand(0,10);$j++){
+                    $avis = new Avis();
+                    $avis->setContenu($faker->text());
+                    $avis->setArticle($article);
+                    $avis->setNote($faker->randomDigit());
+                    $avis->setAuteur($user);
+                    $manager->persist($avis);
+                }
             }
         }
     

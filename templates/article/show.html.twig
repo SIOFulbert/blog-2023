@@ -1,42 +1,88 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Article{% endblock %}
-
-{% block body %}
-    <h1>Article</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ article.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ article.titre }}</td>
-            </tr>
-            <tr>
-                <th>Contenu</th>
-                <td>{{ article.contenu }}</td>
-            </tr>
-            <tr>
-                <th>Crea</th>
-                <td>{{ article.crea ? article.crea|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Une</th>
-                <td>{{ article.une }}</td>
-            </tr>
-            <tr>
-                <th>Slug</th>
-                <td>{{ article.slug }}</td>
-            </tr>
-        </tbody>
-    </table>
-
+{% extends 'blog-single.html.twig' %}
+   {% block post %}
+        
+<h2 class="post-title">{{article.titre}}</h2>
+					<div class="post-meta">
+						<ul>
+							<li>
+								<i class="ion-calendar"></i>{{ article.crea ? article.crea|date('Y-m-d H:i:s') : '' }}
+							</li>
+							<li>
+								<i class="ion-android-people"></i>{{ article.titre }}
+							</li>
+							<li>
+								<a href="blog-grid.html"><i class="ion-pricetags"></i> {{ article.categorie.libelle }}</a>
+							</li>
+						</ul>
+					</div>
+					<div class="post-thumb">
+						<img class="img-fluid" src="images/blog/blog-post-1.jpg" alt="">
+					</div>
+					<div class="post-content post-excerpt">
+						{{article.contenu}}
+					</div>
+					<div class="post-comments">
+						<h3 class="post-sub-heading">{{nbAvis}} Comments</h3>
+						<ul class="media-list comments-list m-bot-50 clearlist">
+							<!-- Comment Item start-->
+                             {% for avis in article.avis %}
+							<li class="media">
+								<a class="pull-left" href="#!">
+									<img class="media-object comment-avatar rounded-circle" src="images/blog/avater-1.jpg" alt="" width="50" height="50">
+								</a>
+								<div class="media-body">
+									<div class="comment-info">
+										<h4 class="comment-author">
+											<a href="#!">{{avis.auteur}}</a>
+										</h4>
+										<time>July 02, 2020, at 11:34</time>
+										<a class="comment-button" href="#!"><i class="tf-ion-chatbubbles"></i>Reply</a>
+									</div>
+									<p>
+                                    {{avis.contenu}}
+									</p>
+									
+								</div>
+							</li>
+                            {% endfor %}
+							<!-- End Comment Item -->
+						</ul>
+                       
+					</div>
+					<div class="post-comments-form">
+						<h3 class="post-sub-heading">Leave You Comments</h3>
+						<form method="post" action="#!" id="form" role="form">
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<!-- Name -->
+									<input type="text" name="name" id="name" class=" form-control" placeholder="Name *" maxlength="100" required="">
+								</div>
+								<div class="col-md-6 form-group">
+									<!-- Email -->
+									<input type="email" name="email" id="email" class=" form-control" placeholder="Email *" maxlength="100"
+									 required="">
+								</div>
+								<div class="form-group col-md-12">
+									<!-- Website -->
+									<input type="text" name="website" id="website" class=" form-control" placeholder="Website" maxlength="100">
+								</div>
+								<!-- Comment -->
+								<div class="form-group col-md-12">
+									<textarea name="text" id="text" class=" form-control" rows="6" placeholder="Comment" maxlength="400"></textarea>
+								</div>
+								<!-- Send Button -->
+								<div class="form-group col-md-12">
+									<button type="submit" class="btn btn-main ">
+										Send comment
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
     <a href="{{ path('app_article_index') }}">back to list</a>
 
     <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
 
     {{ include('article/_delete_form.html.twig') }}
-{% endblock %}
+    {% endblock %}
+
