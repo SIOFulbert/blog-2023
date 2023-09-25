@@ -1,0 +1,11 @@
+{% for article in articles %}    
+            <div>
+              <i class="ion-quote"></i>
+              <h3>{{article.titre}}</h3>
+              <p>{{ article.contenu }}</p>
+              <div class="user">
+                <img src="images/item-img1.jpg" alt="Pepole">
+                <p><span>{{article.utilisateur.pseudo}}</span> {{ article.crea ? article.crea|date('d/m/Y') : '' }}</p>
+              </div>
+            </div>
+    {% endfor %}

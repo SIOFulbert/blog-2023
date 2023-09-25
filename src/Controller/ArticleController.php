@@ -23,7 +23,22 @@ class ArticleController extends AbstractController
             'articles' => $articleRepository->findAll(),
         ]);
     }
-
+    #[Route('/side-articles/{max}', name: 'app_article_side', methods: ['GET'])]
+    public function side(ArticleRepository $articleRepository, int $max ): Response
+    {
+       // $categorie = new Categorie();
+        return $this->render('article/side.html.twig', [
+            'articles' => $articleRepository->findBy([],['crea'=>'desc'],$max,0),
+        ]);
+    }
+    #[Route('/categorie/{slug}/articles', name: 'app_article_categorie', methods: ['GET'])]
+    public function articlescategorie(ArticleRepository $articleRepository, Categorie $categorie): Response
+    {
+       // $categorie = new Categorie();
+        return $this->render('article/index.html.twig', [
+            'articles' => $articleRepository->findByCategorie($categorie),
+        ]);
+    }
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
