@@ -5,9 +5,12 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Form\Article1Type;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,6 +26,54 @@ class ArticleController extends AbstractController
             'articles' => $articleRepository->findAll(),
         ]);
     }
+
+    #[Route('/result', name: 'app_article_result', methods: ['GET'])]
+    public function result(ArticleRepository $articleRepository, Request $request): Response
+    {
+       // $categorie = new Categorie();
+       $form = ($request->get('form'));
+       $elt = $form['elt'];
+       $articles=  $articleRepository->findByElement($elt);
+       return $this->render('article/index.html.twig', [
+           'articles' => $articles,
+       ]);
+    }
+    #[Route('/recherche', name: 'app_article_search', methods: ['GET'])]
+    public function recherche(ArticleRepository $articleRepository, Request $request): Response
+    {
+        $form = $this->createFormBuilder(null, [
+            'attr' => ['class' => 'd-flex'],
+        ])
+        ->setAction($this->generateUrl('app_article_result'))
+        ->add('elt',TextType::class, ['label'=>false,  
+                    'attr' => ['placeholder' => 'Rechercher...',
+                    'class'=>'form-control me-2'
+                    ]])
+        ->add('submit', SubmitType::class,[
+            'attr' => [
+                    'class'=>'btn btn-outline-success'
+            ]
+        ] )
+        ->setMethod('GET')
+        ->getForm();
+       
+       if ($form->isSubmitted() && $form->isValid()) {
+           // Récupérer la valeur du champ de recherche
+           $formData = $form->getData();
+           $searchQuery = $formData['titre'];
+      
+           $articles=  $articleRepository->findByElement($searchQuery);
+           return $this->render('article/index.html.twig', [
+               'articles' => $articles,
+           ]);
+       }
+      
+       return $this->render('article/_form_recherche.html.twig', [
+           'form' => $form->createView(),
+       ]);
+
+    }
+    
     #[Route('/side-articles/{max}', name: 'app_article_side', methods: ['GET'])]
     public function side(ArticleRepository $articleRepository, int $max ): Response
     {
@@ -31,6 +82,7 @@ class ArticleController extends AbstractController
             'articles' => $articleRepository->findBy([],['crea'=>'desc'],$max,0),
         ]);
     }
+    
     #[Route('/categorie/{slug}/articles', name: 'app_article_categorie', methods: ['GET'])]
     public function articlescategorie(ArticleRepository $articleRepository, Categorie $categorie): Response
     {

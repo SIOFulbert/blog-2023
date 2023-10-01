@@ -36,6 +36,16 @@ class ArticleRepository extends ServiceEntityRepository
                 ->getResult()
             ;
        }
+
+       public function findByElement($elt): array
+       {
+        return $this->createQueryBuilder('a')
+   ->where('a.titre like :elt')
+   ->orWhere('a.contenu like :elt' )
+   ->setParameter('elt', '%'.$elt.'%')
+   ->getQuery()
+   ->getResult();
+       }
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */
