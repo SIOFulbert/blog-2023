@@ -30,7 +30,6 @@ class ArticleController extends AbstractController
     #[Route('/result', name: 'app_article_result', methods: ['GET'])]
     public function result(ArticleRepository $articleRepository, Request $request): Response
     {
-       // $categorie = new Categorie();
        $form = ($request->get('form'));
        $elt = $form['elt'];
        $articles=  $articleRepository->findByElement($elt);
@@ -100,7 +99,7 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_article_show', methods: ['GET'])]
     public function show(Article $article): Response
     {
         $nbAvis = count($article->getAvis());
@@ -129,7 +128,7 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_article_delete', methods: ['POST'])]
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
