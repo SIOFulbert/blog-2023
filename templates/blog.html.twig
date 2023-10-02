@@ -11,7 +11,7 @@
       <div class="col-md-12">
         <div class="block">
           <h1>Blogs</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, quibusdam.</p>
+          <p>Devenir un meilleur développeur et prendre le contrôle de sa carrière.</p>
         </div>
       </div>
     </div>
@@ -26,11 +26,11 @@
 			<div class="col-md-6">
 				<div class="post">
 					<div class="post-thumb">
-						<a href="blog-single.html">
+						<a href="{{path('app_article_show', {'id':article.id})}}">
 							<img class="img-fluid" src="asset('images/blog/blog-post-1.jpg')}}" alt="">
 						</a>
 					</div>
-					<h3 class="post-title"><a href="blog-single.html">{{ article.titre }}</a></h3>
+					<h3 class="post-title"><a href="{{path('app_article_show', {'id':article.id})}}">{{ article.titre }}</a></h3>
 					<div class="post-meta">
 						<ul>
 							<li>
@@ -45,7 +45,7 @@
 						</ul>
 					</div>
 					<div class="post-content">
-						{{ article.contenu }}
+						{{ article.contenu|raw | u.truncate(250, '...') }}
 						<a href="{{path('app_article_show', {'id':article.id})}}" class="btn btn-main">Read More</a>
 					</div>
 				</div>
@@ -105,21 +105,27 @@
 
 
     <!-- Main jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
     <!-- Bootstrap 3.1 -->
-    <script src="plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="{{asset('plugins/bootstrap/bootstrap.min.js')}}"></script>
     <!-- slick Carousel -->
-    <script src="plugins/slick/slick.min.js"></script>
-    <script src="plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="{{asset('plugins/slick/slick.min.js')}}"></script>
+    <script src="{{asset('plugins/magnific-popup/jquery.magnific-popup.min.js')}}"></script>
     <!-- filter -->
-    <script src="plugins/shuffle/shuffle.min.js"></script>
-    <script src="plugins/SyoTimer/jquery.syotimer.min.js"></script>
+    <script src="{{asset('plugins/shuffle/shuffle.min.js')}}"></script>
+    <script src="{{asset('plugins/SyoTimer/jquery.syotimer.min.js')}}"></script>
     <!-- Google Map -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
-    <script src="plugins/google-map/map.js"></script>
+    <script src="{{asset('plugins/google-map/map.js')}}"></script>
 
-    <script src="js/script.js"></script>
-
+    <script src="{{asset('js/script.js')}}"></script>
+  <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+  </script>
     </body>
 
     </html>

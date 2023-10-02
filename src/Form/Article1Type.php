@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class Article1Type extends AbstractType
 {
@@ -14,7 +15,7 @@ class Article1Type extends AbstractType
     {
         $builder
             ->add('titre')
-            ->add('contenu')
+            ->add('contenu', TextareaType::class)
             ->add('crea', DateType::class, [
                 'widget' => 'single_text'])
             ->add('une')

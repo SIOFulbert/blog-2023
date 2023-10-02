@@ -56,17 +56,6 @@ class ArticleController extends AbstractController
         ] )
         ->setMethod('GET')
         ->getForm();
-       
-       if ($form->isSubmitted() && $form->isValid()) {
-           // Récupérer la valeur du champ de recherche
-           $formData = $form->getData();
-           $searchQuery = $formData['titre'];
-      
-           $articles=  $articleRepository->findByElement($searchQuery);
-           return $this->render('article/index.html.twig', [
-               'articles' => $articles,
-           ]);
-       }
       
        return $this->render('article/_form_recherche.html.twig', [
            'form' => $form->createView(),
