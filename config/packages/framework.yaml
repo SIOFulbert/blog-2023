@@ -17,7 +17,11 @@ framework:
     #fragments: true
     php_errors:
         log: true
-
+    
+    serializer:
+        default_context:
+            enable_max_depth: false
+            yaml_indentation: 1
 when@test:
     framework:
         test: true

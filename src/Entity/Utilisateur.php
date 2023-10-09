@@ -9,16 +9,19 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[Groups(['article'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+#[Groups(['article', 'utilisateur'])]
     #[ORM\Column(length: 100)]
     private ?string $pseudo = null;
 

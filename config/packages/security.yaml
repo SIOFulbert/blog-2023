@@ -24,6 +24,9 @@ security:
                 csrf_parameter: token
                 csrf_token_generator: security.csrf.token_manager
 
+    access_decision_manager:
+        strategy: unanimous
+        allow_if_all_abstain: false
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

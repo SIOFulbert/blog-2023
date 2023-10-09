@@ -5,12 +5,17 @@ namespace App\Security\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class ArticleVoter extends Voter
 {
     public const EDIT = 'EDIT';
     public const VIEW = 'VIEW';
+    public const DELETE = 'DELETE';
 
+    public function __construct(private Security $security)
+    {
+    }
     protected function supports(string $attribute, mixed $subject): bool
     {
         // replace with your own logic
@@ -26,7 +31,10 @@ class ArticleVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-       /* $utilisateur = $subject->getUtilisateur();
+        if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
+            return true;
+        }
+        /* $utilisateur = $subject->getUtilisateur();
         dd($utilisateur);
         if($user!=$utilisateur){
             return false;
@@ -36,10 +44,10 @@ class ArticleVoter extends Voter
         switch ($attribute) {
             case self::EDIT:
                 // logic to determine if the user can EDIT
-               //  return true or false
+                //  return true or false
                 return  $user === $subject->getUtilisateur();
-                 //   return true;
-               
+                //   return true;
+
                 break;
             case self::VIEW:
                 // logic to determine if the user can VIEW

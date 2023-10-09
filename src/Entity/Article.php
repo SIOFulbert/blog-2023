@@ -7,18 +7,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiResource;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ['article']],
+    denormalizationContext: ['groups' => ['article']],
+)]
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {
+    
+#[Groups(['article'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+#[Groups(['article'])]
     #[ORM\Column(length: 100)]
     private ?string $titre = null;
-
+#[Groups(['article'])]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $contenu = null;
 
@@ -28,6 +37,7 @@ class Article
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $une = null;
 
+#[Groups(['article'])]
     #[ORM\ManyToOne(inversedBy: 'lesarticles')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
@@ -37,7 +47,8 @@ class Article
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Avis::class, orphanRemoval: true)]
     private Collection $avis;
-
+    
+    #[Groups(['article'])]
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 

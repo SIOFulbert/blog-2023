@@ -11,9 +11,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Json;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -89,7 +95,6 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($article);
             $entityManager->flush();
-
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -103,13 +108,13 @@ class ArticleController extends AbstractController
     public function show(Article $article): Response
     {
         $nbAvis = count($article->getAvis());
-       
         return $this->render('article/show.html.twig', [
             'article' => $article,
             'nbAvis' =>$nbAvis
         ]);
     }
 
+    #[IsGranted('EDIT', 'article', 'Vous n\'avez pas les droits', 404)]
     #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
@@ -137,5 +142,13 @@ class ArticleController extends AbstractController
         }
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/show-api/{id}', name: 'app_article_showapi', methods: ['GET'])]
+    public function showApi(Article $article, SerializerInterface $serializer): JsonResponse
+    {
+       $jsonContent = $serializer->serialize($article, 'json', ['groups' => ['article']]);
+       return $this->json($jsonContent);
+      // return new JsonResponse($jsonContent);
+
     }
 }
